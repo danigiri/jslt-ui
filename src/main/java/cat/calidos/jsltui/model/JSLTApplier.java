@@ -1,21 +1,13 @@
-package cat.calidos.jsltui.control.injection;
-
-import cat.calidos.morfeu.control.injection.PingControlModule;
-import cat.calidos.morfeu.webapp.injection.ControlComponent;
-import cat.calidos.morfeu.webapp.injection.ControlModule;
-import dagger.Component;
+package cat.calidos.jsltui.model;
 
 
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@Component(modules = {ControlModule.class, PingControlModule.class})
-public interface JSLTUIControlComponent extends ControlComponent {
-
-@Component.Builder
-interface Builder extends ControlComponent.Builder {}
+public class JSLTApplier {
 
 }
+
 
 /*
  *    Copyright 2019 Daniel Giribet
