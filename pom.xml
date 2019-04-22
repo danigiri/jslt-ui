@@ -1,0 +1,238 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cat.calidos.jslt-ui</groupId>
+	<artifactId>jslt-ui-backend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Eurinome web application</name>
+	<description>TBD</description>
+	<inceptionYear>2018</inceptionYear>
+
+	<properties>
+		<jetty-http-port>8070</jetty-http-port>
+		<jetty-stop-port>8170</jetty-stop-port>
+		<jetty-context-path>/jslt-ui</jetty-context-path>
+		<jetty-version>9.4.12.RC1</jetty-version>
+		<dagger-2-version>2.22.1</dagger-2-version>
+		<jackson-2-version>2.9.8</jackson-2-version>
+		<morfeu-version>0.2.0-SNAPSHOT</morfeu-version>
+		<jslt-version>0.1.7</jslt-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.9</source>
+					<target>1.9</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.google.dagger</groupId>
+							<artifactId>dagger-compiler</artifactId>
+							<version>${dagger-2-version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+				<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty-version}</version>
+				<configuration>
+					<dumpOnStart>false</dumpOnStart> <!-- set to true for debugging -->
+					<scanIntervalSeconds>1</scanIntervalSeconds>
+					<stopPort>${jetty-stop-port}</stopPort>
+					<stopKey>STOP</stopKey>
+					<useTestScope>true</useTestScope>
+					<webApp>
+						<contextPath>${jetty-context-path}</contextPath>
+						<!-- we add this extra classpath so jetty loads templates and all jar deps like jackson and stuff -->
+						<extraClasspath>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/lib</extraClasspath>
+						<!-- containerIncludeJarPattern>.*/classes/.*</containerIncludeJarPattern-->
+						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
+						<resourceBases>
+							<resourceBase>${project.build.outputDirectory}</resourceBase>	<!-- data files for angular app -->
+							<resourceBase>${project.build.directory}/..</resourceBase>	<!-- proxyied files, starting with target/..., for test data compatibility -->
+						</resourceBases>
+					</webApp>
+					<!--scanTargetPatterns> this is a terrible idea, it seems that it opens all the files <scanTargetPattern> 
+						in the exclude, which leads to thousands of fds being used < directory>src/main/webapp</directory> <excludes> <exclude>node_modules</exclude> 
+						</excludes> </scanTargetPattern> </scanTargetPatterns -->
+					<systemProperties>
+						<systemProperty>
+							<name>org.eclipse.jetty.annotations.maxWait</name>
+							<value>60000</value>
+						</systemProperty>
+						<systemProperty> <!-- mvn jetty:run -DRESOURCES_PREFIX=file://$(PWD)/ -->
+							<name>RESOURCES_PREFIX</name>
+							<value>${resources-prefix}</value>
+						</systemProperty>
+					</systemProperties>
+					<httpConnector>
+						<port>${jetty-http-port}</port>
+					</httpConnector>
+				</configuration>
+				<executions>
+					<execution>	<!-- start jetty when target is integration testing -->
+						<id>start-jetty-integration-test</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<scanIntervalSeconds>0</scanIntervalSeconds>
+							<daemon>true</daemon>
+						</configuration>
+					</execution>
+					<execution>	<!-- stop jetty when completed integration testing -->
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+						<configuration>
+							<stopKey>STOP</stopKey>
+							<stopPort>${jetty-stop-port}</stopPort>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+	<dependencies>
+
+		<!-- mvn package war:war install -DarchiveClasses=true -DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -->
+		<dependency>
+			<groupId>cat.calidos.morfeu</groupId>
+			<artifactId>morfeu-webapp</artifactId>	
+			<version>${morfeu-version}</version>
+			<classifier>classes</classifier>	<!-- this is how the extra jar is generated in morfeu -->
+		</dependency>
+		<dependency>
+			<groupId>cat.calidos.morfeu</groupId>
+			<artifactId>morfeu-webapp</artifactId>	
+			<version>${morfeu-version}</version>
+			<classifier>tests</classifier>	<!-- this is how the extra test jar is generated in morfeu -->
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- DEPENDENCY INJECTION -->
+		<dependency>
+			<groupId>com.google.dagger</groupId>
+			<artifactId>dagger</artifactId>
+			<version>${dagger-2-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.dagger</groupId>
+			<artifactId>dagger-compiler</artifactId>
+			<version>${dagger-2-version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1.0.0.redhat-6</version>
+			<!-- scope>provided</scope -->
+		</dependency>
+
+		<!-- JSLT -->
+<dependency>
+  <groupId>com.schibsted.spt.data</groupId>
+  <artifactId>jslt</artifactId>
+  <version>${jslt-version}</version>
+</dependency>
+
+<!-- JETTY RUNTIME -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty-version}</version>
+		</dependency>
+
+		<!-- logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.3.0-alpha4</version>
+		</dependency>
+
+		<!-- UNIT TESTING -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13-beta-2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- UNIT TESTING -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.5.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.5.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>5.5.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<version>1.5.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>1.5.0-M1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.27.0</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<comments>Copyright (C) 2019 Daniel Giribet</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>danigiri</id>
+			<name>Daniel Giribet</name>
+			<email>dani AT calidos DOT cat</email>
+			<url>http//dani.calidos.com</url>
+			<roles>
+				<role>creator</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+</project>
+
