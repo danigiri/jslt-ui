@@ -1,25 +1,18 @@
-// JSLT APPLIER . JAVA
+package cat.calidos.jsltui.problems;
 
-package cat.calidos.jsltui.model;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.schibsted.spt.data.jslt.Expression;
 
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class JSLTApplier {
-
-private Expression expression;
+public class JSLTUIParserException extends Exception {
 
 
-public JSLTApplier(Expression e) {
-	this.expression = e;
-}
-
-
-public JsonNode apply(JsonNode input) { //TODO: watch what errors do here
-	return expression.apply(input);
+/**
+*	@param message
+*	@param cause
+*/
+public JSLTUIParserException(String message, Throwable cause) {
+	super(message, cause);
 }
 
 
