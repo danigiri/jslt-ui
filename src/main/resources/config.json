@@ -1,0 +1,5 @@
+{
+	"config": "jstl-ui",
+	"production": false,
+	"catalogues": "/morfeu/proxy/catalogues.json"
+}

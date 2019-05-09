@@ -17,12 +17,68 @@
 		<xs:annotation>
 			<xs:appinfo>
 				<mf:metadata>
-				<mf:identifier name="@path" />
+					<mf:desc>In order to make it possible to modularize transforms by reusing code JSLT allows you to import JSLT modules from files</mf:desc>
+					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
+					<mf:identifier name="@path" />
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="path" use="required" type="textField" />
 		<xs:attribute name="alias" use="required" type="textField" />
 	</xs:complexType>
-	
+
+
+	<xs:complexType name="Let">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>You can set variables to break up complex computations, or to avoid computing things more than once.</mf:desc>
+					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
+					<mf:transform case="obj-to-yaml" type="directive">KEY-VALUE</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">KEY-VALUE</mf:transform>
+					<mf:identifier name="@key" />
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="key" use="required" type="textField" />
+		<xs:attribute name="value" type="textField" />
+	</xs:complexType>
+
+
+	<xs:complexType name="FunctionDecl">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>Function declaration</mf:desc>
+					<mf:presentation>CELL-WELL</mf:presentation>
+					<mf:thumb>assets/images/holder-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/holder-cell.svg</mf:cell-presentation>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="variables" type="Let" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="functionJSTL" type="FreeformJSLT" minOccurs="0" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="def" type="textField" />	<!--  add regexp restriction -->
+	</xs:complexType>
+
+	<xs:simpleType name="FreeformJSLT">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>Freeform JSLT, evaluated in its entirety</mf:desc>
+					<mf:presentation>CELL-TEXT</mf:presentation>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+
+		<xs:restriction base="xs:string" />
+	</xs:simpleType>
+
+
 </xs:schema>
