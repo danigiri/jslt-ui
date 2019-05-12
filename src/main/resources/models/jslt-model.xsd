@@ -23,7 +23,7 @@
 				<mf:metadata>
 					<mf:desc>Virtual holder that does not appear in the cell tree</mf:desc>
 					<mf:presentation>WELL</mf:presentation>
-					<mf:thumb>morfeu/proxy/assets/images/imports-thumb.svg</mf:thumb>
+					<mf:thumb>morfeu/proxy/assets/images/jslt-thumb.png</mf:thumb>
 					<mf:cell-presentation>morfeu/proxy/assets/images/imports-cell.svg</mf:cell-presentation>
 					<mf:transform case="obj-to-yaml" type="directive">ATTRIBUTES-ONLY</mf:transform>
 					<mf:transform case="yaml-to-xml" type="directive">ATTRIBUTES-ONLY</mf:transform>

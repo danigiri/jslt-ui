@@ -14,8 +14,8 @@
 	<properties>
 		<jetty-http-port>8070</jetty-http-port>
 		<jetty-stop-port>8170</jetty-stop-port>
-		<jetty-context-path>/jslt-ui</jetty-context-path>
-		<jetty-version>9.4.12.RC1</jetty-version>
+		<jetty-context-path>/jslt</jetty-context-path>
+		<jetty-version>9.4.17.v20190418</jetty-version>
 		<dagger-2-version>2.22.1</dagger-2-version>
 		<jackson-2-version>2.9.8</jackson-2-version>
 		<morfeu-version>0.2.1-SNAPSHOT</morfeu-version>
@@ -58,10 +58,12 @@
 						<!-- containerIncludeJarPattern>.*/classes/.*</containerIncludeJarPattern -->
 						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
 						<resourceBases>
+							<resourceBase>${project.basedir}/src/main/webapp</resourceBase> <!-- look first in src resources than in target, for faster editing -->
 							<resourceBase>${project.build.outputDirectory}</resourceBase>	<!-- data files for angular app -->
 							<resourceBase>${project.build.directory}/..</resourceBase>	<!-- proxyied files, starting with target/..., for test data compatibility -->
 						</resourceBases>
 					</webApp>
+					
 					<!--scanTargetPatterns> this is a terrible idea, it seems that it opens all the files <scanTargetPattern> 
 						in the exclude, which leads to thousands of fds being used < directory>src/main/webapp</directory> <excludes> <exclude>node_modules</exclude> 
 						</excludes> </scanTargetPattern> </scanTargetPatterns -->
@@ -70,8 +72,8 @@
 							<name>org.eclipse.jetty.annotations.maxWait</name>
 							<value>60000</value>
 						</systemProperty>
-						<systemProperty> <!-- mvn jetty:run -DRESOURCES_PREFIX=file://$(PWD)/ -->
-							<name>RESOURCES_PREFIX</name>
+						<systemProperty> <!-- mvn jetty:run -D__RESOURCES_PREFIX=file://$(PWD)/ -->
+							<name>__RESOURCES_PREFIX</name>
 							<value>${resources-prefix}</value>
 						</systemProperty>
 					</systemProperties>

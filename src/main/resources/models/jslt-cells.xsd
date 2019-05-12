@@ -18,8 +18,8 @@
 			<xs:appinfo>
 				<mf:metadata>
 					<mf:desc>In order to make it possible to modularize transforms by reusing code JSLT allows you to import JSLT modules from files</mf:desc>
-					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
+					<mf:thumb>morfeu/proxy/assets/images/import-thumb.png</mf:thumb>
+					<mf:cell-presentation>assets/images/import-cell.svg</mf:cell-presentation>
 					<mf:identifier name="@path" />
 				</mf:metadata>
 			</xs:appinfo>
@@ -34,8 +34,8 @@
 			<xs:appinfo>
 				<mf:metadata>
 					<mf:desc>You can set variables to break up complex computations, or to avoid computing things more than once.</mf:desc>
-					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
+					<mf:thumb>morfeu/proxy/assets/images/var-thumb.png</mf:thumb>
+					<mf:cell-presentation>assets/images/var-cell.svg</mf:cell-presentation>
 					<mf:transform case="obj-to-yaml" type="directive">KEY-VALUE</mf:transform>
 					<mf:transform case="yaml-to-xml" type="directive">KEY-VALUE</mf:transform>
 					<mf:identifier name="@key" />
@@ -53,8 +53,8 @@
 				<mf:metadata>
 					<mf:desc>Function declaration</mf:desc>
 					<mf:presentation>CELL-WELL</mf:presentation>
-					<mf:thumb>assets/images/holder-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/holder-cell.svg</mf:cell-presentation>
+					<mf:thumb>morfeu/proxy/assets/images/function-thumb.png</mf:thumb>
+					<mf:cell-presentation>assets/images/function-cell.svg</mf:cell-presentation>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
@@ -73,6 +73,8 @@
 				<mf:metadata>
 					<mf:desc>Freeform JSLT, evaluated in its entirety</mf:desc>
 					<mf:presentation>CELL-TEXT</mf:presentation>
+					<mf:thumb>morfeu/proxy/assets/images/main-jslt-thumb.png</mf:thumb>
+					<mf:cell-presentation>assets/images/main-jslt-cell.svg</mf:cell-presentation>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>

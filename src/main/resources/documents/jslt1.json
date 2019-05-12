@@ -1,0 +1,15 @@
+{
+	"name": "Document JSLT 1"
+	,"desc": "First JSLT document (JSON)"
+	,"kind": "json"
+	,"modelURI": "models/jslt-model.xsd"
+	,"contentURI": "documents/jstl1-content.json"
+	
+}
+{
+	"name": "Empty"
+	,"desc": "Empty desired states"
+	,"kind": "yaml"
+	,"modelURI": "models/helmfile-model.xsd"
+	,"contentURI": "documents/empty.yaml"
+}

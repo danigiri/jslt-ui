@@ -1,0 +1,9 @@
+{
+	"name": "JSLT test"
+	,"desc": "First JSLT test catalogue"
+	,"documents": [
+		{ "name":"JSLT 1", "kind": "json", "uri":"documents/jslt1.json" }
+		]
+	,"snippets": [
+		]
+}
