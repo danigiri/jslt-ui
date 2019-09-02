@@ -10,6 +10,7 @@
 	<name>Eurinome web application</name>
 	<description>TBD</description>
 	<inceptionYear>2018</inceptionYear>
+	<!-- http://localhost:3000/?config=%2Fmorfeu%2Fproxy%2Fconfig.json this loads jslt-ui-backend config through the proxy -->
 	<!--  mvn clean compile jetty:run -D__RESOURCES_PREFIX=http://localhost:8070/jslt/ -D__PROXY_PREFIX=http://localhost:8070/jslt -->
 	<properties>
 		<jetty-http-port>8070</jetty-http-port>

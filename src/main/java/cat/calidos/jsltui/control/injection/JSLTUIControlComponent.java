@@ -9,7 +9,8 @@ import dagger.Component;
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@Component(modules = {JSLTApplierControlModule.class, ControlModule.class, PingControlModule.class})
+@Component(modules = {JSLTApplierControlModule.class, JSLTPreviewControlModule.class, ControlModule.class,
+						PingControlModule.class})
 public interface JSLTUIControlComponent extends ControlComponent {
 
 @Component.Builder

@@ -1,28 +1,26 @@
+// JSLT APPLIER CONTROL MODULE . JAVA
+
 package cat.calidos.jsltui.control.injection;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 
 import javax.inject.Named;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
-import cat.calidos.jsltui.model.JSLTApplier;
-import cat.calidos.jsltui.model.injection.DaggerJSLTApplierComponent;
-import cat.calidos.jsltui.problems.JSLTUIParserException;
-import cat.calidos.morfeu.utils.MorfeuUtils;
-import cat.calidos.morfeu.utils.injection.DaggerJSONParserComponent;
-import cat.calidos.morfeu.view.injection.DaggerViewComponent;
-import cat.calidos.morfeu.webapp.injection.ControlComponent;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
 import dagger.multibindings.StringKey;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cat.calidos.jsltui.model.injection.DaggerJSLTApplierComponent;
+import cat.calidos.morfeu.utils.MorfeuUtils;
+import cat.calidos.morfeu.view.injection.DaggerViewComponent;
+import cat.calidos.morfeu.webapp.injection.ControlComponent;
+
 
 /**
 *	@author daniel giribet
@@ -38,15 +36,14 @@ public static final String JSLT_PARAM = "jslt";
 public static final String JSON_PARAM = "json";
 
 
-
 @Provides @IntoMap @Named("GET")
 @StringKey(APPLY_PATH)
 public static BiFunction<List<String>, Map<String, String>, String> apply() {
-	
+
 	return (pathElems, params) -> {
 
 		String out;
-		
+
 		if (params.size()<2) {
 			return DaggerViewComponent.builder()
 					.withTemplatePath("templates/apply-problem.twig")
