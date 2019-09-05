@@ -4,13 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import org.junit.Before;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.morfeu.utils.injection.DaggerJSONParserComponent;
@@ -23,25 +22,25 @@ public class JSLTApplierControlModuleTest {
 private ArrayList<String> pathElems;
 
 
-@Before
+@BeforeEach
 public void setup() {
 
 	pathElems = new ArrayList<String>(0);
 	pathElems.add("apply");
-	
+
 }
 
 
 @Test @DisplayName("Number of params error")
-public void applierIdentityTest() throws Exception {
+public void applierParamsTest() throws Exception {
 
 	String result = JSLTApplierControlModule.apply().apply(pathElems, MorfeuUtils.paramStringMap());
 	JsonNode outputNode = DaggerJSONParserComponent.builder().from(result).build().json().get();
 	assertAll("empty parameters tests",
-			() -> assertNotNull(outputNode),
-			() -> assertTrue(outputNode.has("__problem"), "No problem field in error JSON"),
-			() -> assertEquals("Wrong number of parameters", outputNode.get("__problem").asText())
-			);
+		() -> assertNotNull(outputNode),
+		() -> assertTrue(outputNode.has("__problem"), "No problem field in error JSON"),
+		() -> assertEquals("Wrong number of parameters", outputNode.get("__problem").asText())
+	);
 
 }
 
@@ -56,9 +55,9 @@ public void applierTest() throws Exception {
 	JsonNode outputNode = DaggerJSONParserComponent.builder().from(result).build().json().get();
 	JsonNode expected = DaggerJSONParserComponent.builder().from(json).build().json().get();
 	assertAll("empty parameters tests",
-			() -> assertNotNull(outputNode),
-			() -> assertEquals(expected, outputNode)
-			);
+		() -> assertNotNull(outputNode),
+		() -> assertEquals(expected, outputNode)
+	);
 
 }
 
@@ -73,9 +72,9 @@ public void incorrectJSTLTest() throws Exception {
 	JsonNode outputNode = DaggerJSONParserComponent.builder().from(result).build().json().get();
 	String expectedProblem = "Problem when compiling JSLT expression";
 	assertAll("incorrect tests",
-			() -> assertNotNull(outputNode),
-			() -> assertTrue(outputNode.get("__problem").asText().contains(expectedProblem))
-			);
+		() -> assertNotNull(outputNode),
+		() -> assertTrue(outputNode.get("__problem").asText().contains(expectedProblem))
+	);
 
 }
 
@@ -90,9 +89,9 @@ public void incorrectJSONTest() throws Exception {
 	JsonNode outputNode = DaggerJSONParserComponent.builder().from(result).build().json().get();
 	String expected = "Problem when parsing input JSON expression";
 	assertAll("incorrect tests",
-			() -> assertNotNull(outputNode),
-			() -> assertTrue(outputNode.get("__problem").asText().contains(expected))
-			);
+		() -> assertNotNull(outputNode),
+		() -> assertTrue(outputNode.get("__problem").asText().contains(expected))
+	);
 
 }
 

@@ -46,11 +46,11 @@ public static BiFunction<List<String>, Map<String, String>, String> apply() {
 
 		if (params.size()<2) {
 			return DaggerViewComponent.builder()
-					.withTemplatePath("templates/apply-problem.twig")
-					.withValue(MorfeuUtils.paramMap())
-					.andProblem("Wrong number of parameters")
-					.build()
-					.render();
+										.withTemplatePath("templates/apply-problem.twig")
+										.withValue(MorfeuUtils.paramMap())
+										.andProblem("Wrong number of parameters")
+										.build()
+										.render();
 		}
 
 		try {

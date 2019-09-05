@@ -6,13 +6,21 @@ import java.util.function.BiFunction;
 
 import javax.inject.Named;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
 import dagger.multibindings.StringKey;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import cat.calidos.jsltui.model.injection.DaggerJSLTApplierComponent;
+import cat.calidos.morfeu.utils.MorfeuUtils;
+import cat.calidos.morfeu.utils.injection.MapperModule;
+import cat.calidos.morfeu.view.injection.DaggerViewComponent;
+
 
 /**
 *	@author daniel giribet
@@ -24,21 +32,59 @@ protected final static Logger log = LoggerFactory.getLogger(JSLTPreviewControlMo
 
 private static final String APPLY_PATH = "/preview/?";
 
-public static final String JSLT_PARAM = "jslt";
-public static final String JSON_PARAM = "json";
 
 @Provides @IntoMap @Named("GET")
 @StringKey(APPLY_PATH)
-public static BiFunction<List<String>, Map<String, String>, String> apply() {
+public static BiFunction<List<String>, Map<String, String>, String> preview(ObjectMapper mapper) {
 
 	return (pathElems, params) -> {
 
-		String transformation = JSLTApplierControlModule.apply().apply(pathElems, params);
-		
 		String out;
-		return "";
+
+		if (params.size()<2) {
+			return DaggerViewComponent.builder()
+										.withTemplatePath("templates/preview-problem.twig.html")
+										.withValue(MorfeuUtils.paramMap())
+										.andProblem("Wrong number of parameters")
+										.build()
+										.render();
+		}
+
+		try {
+
+			String jslt = params.get(JSLTApplierControlModule.JSLT_PARAM);
+			String content = params.get(JSLTApplierControlModule.JSON_PARAM);
+			out = DaggerJSLTApplierComponent.builder().fromJSLT(jslt).andContent(content).build().apply().get();
+			Object json = mapper.readValue(out, Object.class);
+			out = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+			out = DaggerViewComponent.builder()
+										.withTemplatePath("templates/preview.twig.html")
+										.withValue(MorfeuUtils.paramMap("output", out))
+										.build()
+										.render();
+
+		} catch (Exception e) {
+			out = DaggerViewComponent.builder()
+										.withTemplatePath("templates/preview-problem.twig.html")
+										.withValue(MorfeuUtils.paramMap("stacktrace", e.toString()))
+										.andProblem(e.getMessage())
+										.build()
+										.render();
+		}
+
+		return out;
 
 	};
+
+}
+
+
+@Provides
+public static ObjectMapper jsonMapper() {
+
+	log.trace("[Producing ObjectMapper]");
+	return new ObjectMapper();	//TODO: check if it is necessary to 'provide' default constructor objects in Dagger2
+
 }
 
 }
