@@ -42,6 +42,14 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<plugin>	<!--  Run tests from maven CLI -->
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.2</version>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -64,7 +72,6 @@
 							<resourceBase>${project.build.directory}/..</resourceBase>	<!-- proxyied files, starting with target/..., for test data compatibility -->
 						</resourceBases>
 					</webApp>
-					
 					<!--scanTargetPatterns> this is a terrible idea, it seems that it opens all the files <scanTargetPattern> 
 						in the exclude, which leads to thousands of fds being used < directory>src/main/webapp</directory> <excludes> <exclude>node_modules</exclude> 
 						</excludes> </scanTargetPattern> </scanTargetPatterns -->
