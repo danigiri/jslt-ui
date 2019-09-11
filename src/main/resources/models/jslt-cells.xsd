@@ -72,9 +72,8 @@
 			<xs:appinfo>
 				<mf:metadata>
 					<mf:desc>Freeform JSLT, evaluated in its entirety</mf:desc>
-					<mf:presentation>CELL-TEXT</mf:presentation>
 					<mf:thumb>morfeu/proxy/assets/images/main-jslt-thumb.png</mf:thumb>
-					<mf:cell-presentation>morfeu/proxy/assets/images/main-jslt-cell.svg</mf:cell-presentation>
+					<mf:cell-presentation type="HTML">morfeu/proxy/assets/images/main-jslt-cell.svg</mf:cell-presentation>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>

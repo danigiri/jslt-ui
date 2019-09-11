@@ -2,6 +2,8 @@
 
 package cat.calidos.jsltui.control.injection;
 
+import java.io.InputStream;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -13,11 +15,15 @@ import dagger.Provides;
 import dagger.multibindings.IntoMap;
 import dagger.multibindings.StringKey;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cat.calidos.jsltui.model.injection.DaggerJSLTApplierComponent;
+import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.MorfeuUtils;
+import cat.calidos.morfeu.utils.injection.DaggerDataFetcherComponent;
+import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
 import cat.calidos.morfeu.view.injection.DaggerViewComponent;
 import cat.calidos.morfeu.webapp.injection.ControlComponent;
 
@@ -34,6 +40,7 @@ private static final String APPLY_PATH = "/apply/?";
 
 public static final String JSLT_PARAM = "jslt";
 public static final String JSON_PARAM = "json";
+public static final String URI_PARAM = "uri";
 
 
 @Provides @IntoMap @Named("GET")
@@ -45,18 +52,26 @@ public static BiFunction<List<String>, Map<String, String>, String> apply() {
 		String out;
 
 		if (params.size()<2) {
-			return DaggerViewComponent.builder()
-										.withTemplatePath("templates/apply-problem.twig")
-										.withValue(MorfeuUtils.paramMap())
-										.andProblem("Wrong number of parameters")
-										.build()
-										.render();
+			return renderProblem("Wrong number of parameters");
+		}
+
+		String jslt = params.get(JSLT_PARAM);
+		if (jslt==null) {
+			return renderProblem("Missing '"+JSLT_PARAM+"'");
+		}
+		
+		String content = params.get(JSON_PARAM);
+		String uri = params.get(URI_PARAM);
+		if (content==null && uri==null) {
+			return renderProblem("Wrong should either have '"+JSON_PARAM+"' or '"+URI_PARAM+"'");
 		}
 
 		try {
-
-			String jslt = params.get(JSLT_PARAM);
-			String content = params.get(JSON_PARAM);
+			if (uri!=null) {
+				URI u = DaggerURIComponent.builder().from(uri).builder().uri().get();
+				InputStream inputStream = DaggerDataFetcherComponent.builder().forURI(u).build().fetchData().get();
+				content = IOUtils.toString(inputStream, Config.DEFAULT_CHARSET);
+			}
 			out = DaggerJSLTApplierComponent.builder().fromJSLT(jslt).andContent(content).build().apply().get();
 
 		} catch (Exception e) {
@@ -79,6 +94,16 @@ public static BiFunction<List<String>, Map<String, String>, String> apply() {
 @StringKey(APPLY_PATH)
 public static String contentType() {
 	return ControlComponent.JSON;
+}
+
+
+private static String renderProblem(String problem) {
+	return DaggerViewComponent.builder()
+								.withTemplatePath("templates/apply-problem.twig")
+								.withValue(MorfeuUtils.paramMap())
+								.andProblem(problem)
+								.build()
+								.render();
 }
 
 }

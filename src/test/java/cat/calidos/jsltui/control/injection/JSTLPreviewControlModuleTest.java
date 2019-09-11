@@ -47,6 +47,7 @@ public void applierParamsTest() throws Exception {
 
 }
 
+
 @Test @DisplayName("Identity parsing")
 public void applierTest() throws Exception {
 
@@ -62,6 +63,20 @@ public void applierTest() throws Exception {
 
 }
 
+@Test @DisplayName("File parsing")
+public void fileApplierTest() throws Exception {
+	
+	String json = "file://";
+	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTApplierControlModule.JSLT_PARAM, ".",
+															JSLTApplierControlModule.JSON_PARAM, json);
+	String result = JSLTPreviewControlModule.preview(mapper).apply(pathElems, params);
+	assertAll("empty parameters tests",
+			() -> assertNotNull(result),
+			() -> assertTrue(result.contains("<code>"), "Does not show code"),
+			() -> assertTrue(result.contains("\"foo\" : \"bar\""), "Does not include output")
+		);
+
+}
 
 }
 
