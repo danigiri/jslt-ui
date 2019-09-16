@@ -52,7 +52,7 @@ public void applierParamsTest() throws Exception {
 public void applierTest() throws Exception {
 
 	String json = "{\"foo\":\"bar\"}";
-	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTApplierControlModule.JSLT_PARAM, ".",
+	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTPreviewControlModule.JSLT_PARAM, ".",
 															JSLTApplierControlModule.JSON_PARAM, json);
 	String result = JSLTPreviewControlModule.preview(mapper).apply(pathElems, params);
 	assertAll("empty parameters tests",
@@ -63,12 +63,13 @@ public void applierTest() throws Exception {
 
 }
 
+
 @Test @DisplayName("File parsing")
 public void fileApplierTest() throws Exception {
-	
-	String json = "file://";
-	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTApplierControlModule.JSLT_PARAM, ".",
-															JSLTApplierControlModule.JSON_PARAM, json);
+
+	String uri = "file://"+System.getProperty("user.dir")+"/target/classes/documents/test-content.json";
+	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTPreviewControlModule.JSLT_PARAM, ".",
+															JSLTApplierControlModule.URI_PARAM, uri);
 	String result = JSLTPreviewControlModule.preview(mapper).apply(pathElems, params);
 	assertAll("empty parameters tests",
 			() -> assertNotNull(result),
@@ -78,8 +79,10 @@ public void fileApplierTest() throws Exception {
 
 }
 
-}
 
+
+
+}
 
 /*
  *    Copyright 2019 Daniel Giribet
