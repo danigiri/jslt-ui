@@ -38,10 +38,6 @@ protected final static Logger log = LoggerFactory.getLogger(JSLTPreviewControlMo
 
 private static final String PREVIEW_PATH = "/preview/?";
 
-public static final String JSLT_PARAM = "jslt";
-public static final String JSON_PARAM = "json";
-public static final String URI_PARAM = "uri";
-
 
 @Provides @IntoMap @Named("GET")
 @StringKey(PREVIEW_PATH)
@@ -60,14 +56,16 @@ public static BiFunction<List<String>, Map<String, String>, String> preview(Obje
 										.render();
 		}
 
-		String jslt = params.get(JSLT_PARAM);
+		String jslt = params.get(JSLTUIControlComponent.JSLT_PARAM);
 		if (jslt==null) {
-			return renderProblem("Missing '"+JSLT_PARAM+"'");
+			return renderProblem("Missing '"+JSLTUIControlComponent.JSLT_PARAM+"'");
 		}
-		String content = params.get(JSON_PARAM);
-		String uri = params.get(URI_PARAM);
+		String content = params.get(JSLTUIControlComponent.JSON_PARAM);
+		String uri = params.get(JSLTUIControlComponent.URI_PARAM);
 		if (content==null && uri==null) {
-			return renderProblem("Wrong should either have '"+JSON_PARAM+"' or '"+URI_PARAM+"'");
+			String problem = "Wrong should either have '"+JSLTUIControlComponent.JSON_PARAM+
+								"' or '"+JSLTUIControlComponent.URI_PARAM+"'";
+			return renderProblem(problem);
 		}
 
 		try {

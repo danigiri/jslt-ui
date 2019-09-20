@@ -52,8 +52,8 @@ public void applierParamsTest() throws Exception {
 public void applierTest() throws Exception {
 
 	String json = "{\"foo\":\"bar\"}";
-	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTPreviewControlModule.JSLT_PARAM, ".",
-															JSLTApplierControlModule.JSON_PARAM, json);
+	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTUIControlComponent.JSLT_PARAM, ".",
+															JSLTUIControlComponent.JSON_PARAM, json);
 	String result = JSLTPreviewControlModule.preview(mapper).apply(pathElems, params);
 	assertAll("empty parameters tests",
 		() -> assertNotNull(result),
@@ -68,8 +68,8 @@ public void applierTest() throws Exception {
 public void fileApplierTest() throws Exception {
 
 	String uri = "file://"+System.getProperty("user.dir")+"/target/classes/documents/test-content.json";
-	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTPreviewControlModule.JSLT_PARAM, ".",
-															JSLTApplierControlModule.URI_PARAM, uri);
+	Map<String, String> params = MorfeuUtils.paramStringMap(JSLTUIControlComponent.JSLT_PARAM, ".",
+															JSLTUIControlComponent.URI_PARAM, uri);
 	String result = JSLTPreviewControlModule.preview(mapper).apply(pathElems, params);
 	assertAll("empty parameters tests",
 			() -> assertNotNull(result),
@@ -78,8 +78,6 @@ public void fileApplierTest() throws Exception {
 		);
 
 }
-
-
 
 
 }

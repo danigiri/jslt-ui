@@ -59,7 +59,6 @@ public static BiFunction<List<String>, Map<String, String>, String> apply() {
 		if (jslt==null) {
 			return renderProblem("Missing '"+JSLT_PARAM+"'");
 		}
-		
 		String content = params.get(JSON_PARAM);
 		String uri = params.get(URI_PARAM);
 		if (content==null && uri==null) {
@@ -105,6 +104,7 @@ private static String renderProblem(String problem) {
 								.build()
 								.render();
 }
+
 
 }
 

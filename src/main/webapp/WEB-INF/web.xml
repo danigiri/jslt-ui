@@ -3,7 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee https://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/web-app_4_0.xsdd"
 	version="4.0" 
-	metadata-complete="false">
+	metadata-complete="true">
+
+	<context-param>
+		<description>Resources uri prefix, end with '/'</description>
+		<param-name>__RESOURCES_PREFIX</param-name>
+		<param-value>file://PLEASE_DEFINE_ME</param-value>
+	</context-param>
 
 	<!-- Generic request dispatcher -->
 	<servlet>
