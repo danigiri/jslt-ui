@@ -15,7 +15,7 @@ public interface JSLTUIControlComponent extends ControlComponent {
 
 public static final String JSLT_PARAM = "jslt";
 public static final String JSON_PARAM = "json";
-public static final String URI_PARAM = "uri";
+public static final String URI_PARAM = "jsonuri";
 
 @Component.Builder
 interface Builder extends ControlComponent.Builder {}

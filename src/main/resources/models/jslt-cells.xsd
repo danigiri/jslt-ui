@@ -73,7 +73,8 @@
 				<mf:metadata>
 					<mf:desc>Freeform JSLT, evaluated in its entirety</mf:desc>
 					<mf:thumb>morfeu/proxy/assets/images/main-jslt-thumb.png</mf:thumb>
-					<mf:cell-presentation type="HTML">morfeu/proxy/assets/images/main-jslt-cell.svg</mf:cell-presentation>
+					<mf:cell-presentation type="HTML">morfeu/proxy/dyn/preview/?jsonuri=target/classes/documents/test-content.json&amp;jslt=$_VALUE</mf:cell-presentation>
+					<mf:presentation>CELL-TEXT-ONELINE</mf:presentation>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
