@@ -11,8 +11,8 @@
 			</mf:extra-metadata>
 		</xs:appinfo>
 	</xs:annotation>
-	
-	
+
+
 	<!-- this is a hack that should be configurable -->
 	<xs:include schemaLocation="http://localhost:8080/morfeu/test-resources/models/test-types.xsd"/>
 	<xs:include schemaLocation="jslt-cells.xsd"/>
@@ -37,7 +37,7 @@
 				<xs:element name="imports" type="Import" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="variables" type="Let" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="functions" type="FunctionDecl" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element name="mainJSLT" type="FreeformJSLT" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="mainJSLT" type="FreeformJSLT" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
