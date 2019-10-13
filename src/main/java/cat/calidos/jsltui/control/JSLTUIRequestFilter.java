@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cat.calidos.morfeu.control.injection.DaggerMorfeuPOSTFilterComponent;
+import cat.calidos.morfeu.control.injection.MorfeuPOSTFilterComponent;
 
 /**
 *	@author daniel giribet
@@ -32,12 +33,17 @@ public void init(FilterConfig filterConfig) throws ServletException {
 public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 throws IOException, ServletException {
 
-	boolean handled = DaggerMorfeuPOSTFilterComponent.builder().request(request).response(response).build().handle();
-
-	if (!handled) {
-		chain.doFilter(request, response);
+	
+	MorfeuPOSTFilterComponent requestHandler = DaggerMorfeuPOSTFilterComponent.builder()
+																				.request(request)
+																				.response(response)
+																				.build();
+	if (requestHandler.needsToHandle()) {
+		requestHandler.handle();
+		log.trace("Handled the request in the filter ({})", request);
 	}
-
+	chain.doFilter(request, response);
+	
 }
 
 
