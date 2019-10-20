@@ -1,33 +1,25 @@
-package cat.calidos.jsltui.control;
+package cat.calidos.jsltui.control.injection;
 
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import dagger.producers.ProductionComponent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cat.calidos.jsltui.control.injection.DaggerJSLTUIServletFilter;
-import cat.calidos.morfeu.control.MorfeuRequestFilter;
+import cat.calidos.morfeu.webapp.injection.POSTFileSaverModule;
+import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 import cat.calidos.morfeu.webapp.injection.HttpFilterComponent;
+import cat.calidos.morfeu.webapp.injection.HttpFilterModule;
+
 
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class JSLTUIRequestFilter extends MorfeuRequestFilter {
-
-protected final static Logger log = LoggerFactory.getLogger(JSLTUIRequestFilter.class);
-
-@Override
-protected HttpFilterComponent filterComponent(FilterChain chain, HttpServletRequest httpRequest,
-												HttpServletResponse httpResponse) {
-	return DaggerJSLTUIServletFilter.builder().request(httpRequest).response(httpResponse).chain(chain).build();
-}
+@ProductionComponent(modules={HttpFilterModule.class, POSTFileSaverModule.class, ListeningExecutorServiceModule.class})
+public interface JSLTUIServletFilter extends HttpFilterComponent {
 
 
-
+@ProductionComponent.Builder
+interface Builder extends HttpFilterComponent.Builder {}
 
 }
+
 
 /*
  *    Copyright 2019 Daniel Giribet
@@ -44,4 +36,3 @@ protected HttpFilterComponent filterComponent(FilterChain chain, HttpServletRequ
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
